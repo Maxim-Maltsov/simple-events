@@ -32,6 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Sunctum. Autorization token.
         $token = Auth::user()->createToken('API-Token')->plainTextToken;
         session(['API-Token' => $token]);
 
@@ -45,7 +46,8 @@ class AuthenticatedSessionController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
-    {
+    {   
+        // Sunctum. Autorization token.
         Auth::user()->tokens()->delete();
 
         Auth::guard('web')->logout();

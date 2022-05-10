@@ -45,6 +45,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->role = 'admin';
+        $user->save();
+
+        // Sunctum. Autorization token.
         $token = $user->createToken('API-Token')->plainTextToken;
         session(['API-Token' => $token]);
 

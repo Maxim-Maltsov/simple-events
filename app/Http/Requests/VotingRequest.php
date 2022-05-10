@@ -35,8 +35,8 @@ class VotingRequest extends FormRequest
         return [
 
             'required' => 'Поле :attribute обязательно к заполнению.',
-            'min' => 'Значение поле :attribute не должно быть менее :min.',
-            'max' => 'Значение поле :attribute не должно быть более :max.',
+            'min' => 'Значение поля :attribute не должно быть менее :min.',
+            'max' => 'Значение поля :attribute не должно быть более :max.',
         ];
     }
 }
