@@ -179,10 +179,11 @@ const app = createApp({
                 })
                 .listen('AddedNewMemberEvent', (e) => {
                     
-                    this.members.push(e.user);
+                        this.members.push(e.user);
+                    }     
                 });
 
-                
+
         
         if ( location.pathname == '/' ) {
             
