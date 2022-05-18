@@ -24401,7 +24401,8 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
       accepted: false,
       userMadeChoice: false,
       YES: 1,
-      NO: 0
+      NO: 0,
+      action: 0
     };
   },
   methods: {
@@ -24497,7 +24498,11 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
         location.pathname = '/voting-finished';
       }
     }).listen('AddedNewMemberEvent', function (e) {
-      _this3.members.push(e.user);
+      _this3.action = e.action;
+
+      if (_this3.action == _this3.YES) {
+        _this3.members.push(e.user);
+      }
     });
 
     if (location.pathname == '/') {

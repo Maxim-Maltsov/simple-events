@@ -17,15 +17,17 @@ class AddedNewMemberEvent implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
+    public $action;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, int $action)
     {
         $this->user = $user;
+        $this->action = $action;
     }
 
     /**

@@ -40,9 +40,10 @@ const app = createApp({
             YES: 1,
             NO: 0,
 
+            action:0,
         }
     },
-
+    
     methods: {
 
         sendVote(id) {
@@ -179,11 +180,15 @@ const app = createApp({
                 })
                 .listen('AddedNewMemberEvent', (e) => {
                     
+                    this.action = e.action;
+                    
+                    if (this.action == this.YES) {
+                        
                         this.members.push(e.user);
-                    }     
+                    }
                 });
 
-
+                
         
         if ( location.pathname == '/' ) {
             

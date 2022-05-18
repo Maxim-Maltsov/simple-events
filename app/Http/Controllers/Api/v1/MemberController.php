@@ -28,7 +28,9 @@ class MemberController extends Controller
         $member->save();
 
         $user = $member->user;
-        AddedNewMemberEvent::dispatch($user);
+        $action = $member->action;
+
+        AddedNewMemberEvent::dispatch($user, $action);
 
         return new MemberResource($member);
     }

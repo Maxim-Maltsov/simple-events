@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-12 text-center flex-column justify-content-center align-items-center">
             
-                <section v-if="errored">
+                <section v-if="errored" class="d-flex flex-column align-items-center">
                     <div class="card-info m-5" style="width: 70%">
                         <div class="alert alert-danger mt-5" role="alert">
                             <strong>{{ __('Уведомлене! ') }}</strong><div class="text-secondary">{{ __('Не удалось получить данные.') }}</div>
