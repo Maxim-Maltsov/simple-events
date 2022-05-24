@@ -6,7 +6,7 @@
     <div class="row text-center">
         <div class="col-12 d-flex direction-column align-items-center justify-content-center p-5">
  
-            <div class="card" style="width:60%">
+            <div class="card m-3" style="width:60%">
                 <div class="card-body">
                    
                     @if (session('message'))

@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Exceptions\CanNotCreateNewVotingException;
 use App\Exceptions\NoEventsException;
 use App\Http\Requests\VotingRequest;
+use App\Models\Like;
+use App\Models\User;
 use App\Models\Voting;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -52,9 +55,10 @@ class VotingController extends Controller
 
     public function results()
     {
-        $token = session('API-Token');
-
-        return view('voting-results', ['token' => $token ]);
+        $token = session('API-Token');   
+        $users = Like::getVotedUsers();
+        
+        return view('voting-results', ['token' => $token, 'users' => $users ]);
     }
 
 

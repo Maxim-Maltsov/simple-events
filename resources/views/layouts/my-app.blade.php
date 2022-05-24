@@ -18,7 +18,7 @@
 
 <body>
     
-    @include('layouts.my-header');
+    @include('layouts.my-header')
    
     <main id="app">
         <div class="container">

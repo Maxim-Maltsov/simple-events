@@ -32,11 +32,16 @@
                             <span class="badge badge-secondary">@{{ timerText }}</span>
                         </div>
                     </div>
-                    <div  class="card m-2" style="width: 80%">
+                    <div  class="card m-3" style="width: 80%">
                         <div  class="card-body d-flex flex-column justify-content-center align-items-center p-2 m-2">
                             <h5 class="card-title text-success m-5">{{ __('Итоги голосования!') }}</h5>
-                            <p class=" m-2">{{ __('В голосовании победило мероприятие: ') }} <span class=" text-success p-3">@{{ winnerEvent.title }}</span></p>
-                            <p class="m-2">{{ __('В мероприятии участвуют: ') }} <span v-for="member of members" class="text-success text-wrap px-1"> @{{ (member.name)? member.name + ", " : ""}} </span></p>
+                            <p class=" mt-2">{{ __('В голосовании победило мероприятие: ') }} <span class=" text-success py-3">@{{ winnerEvent.title }}</span></p>
+                            <p class=" mt-2">{{ __('За мероприятие голосовали: ') }} 
+                                @foreach ($users as $user)
+                                    <span class=" text-success py-3"> {{ ($user->name)? $user->name . ', ' : ' ' }} </span>
+                                @endforeach
+                            </p>
+                            <p class="m-2">{{ __('В мероприятии участвуют: ') }} <span v-for="member of members" class="text-success text-wrap px-1"> @{{ (member.name)? member.name + ', ' : ' '}} </span></p>
                             <div class="d-flex justify-content-center align-items-center  m-4">
                                 <button :disabled="accepted" v-on:click=" takePart(YES)" type="button" class="btn btn-success bg-success">{{ __('Принять участие') }}</button>
                                 <button :disabled="accepted" v-on:click=" takePart(NO)" type="button" class="btn btn-success bg-danger ml-2">{{ __('Отказаться') }}</button>
@@ -44,7 +49,7 @@
                         </div>
                     </div>
                 </section>
-                
+
         </div>
     </div>
     
