@@ -25,6 +25,7 @@ const app = createApp({
 
             votes: 0,
             send: false,
+            userVoted: false,
 
             timerText: "00:00",
             totalSeconds: 0,
@@ -155,6 +156,7 @@ const app = createApp({
                     
                     if ( this.votes < e.likesAmount ) {
                          this.votes = e.likesAmount;
+                        
                     }
                 })
                 .listen('VotingFinishedPhaseOneEvent', (e) => {
@@ -209,14 +211,28 @@ const app = createApp({
         
         if ( location.pathname == '/voting-events' ) {
             
+            let config = {
+
+                headers: {
+                    Authorization: "Bearer " + token,
+                }
+            }
+            
             axios
-                .get('api/v1/voting-phase-one')
+                .get('api/v1/voting-phase-one', config)
                 .then( response => {
                     
                     this.voting = response.data.data.voting;
                     this.events = response.data.data.events;
                     this.totalSeconds = response.data.data.totalSeconds;
                     this.votes = response.data.data.likesAmount;
+                    this.userVoted = response.data.data.userVoted;
+                    
+                    if (this.userVoted) {
+
+                        this.send = true;
+                    }
+
                 })
                 .catch( error => {
                     

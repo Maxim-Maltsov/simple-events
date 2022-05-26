@@ -9,7 +9,7 @@
             <section class="d-flex flex-column align-items-center p-5">   
                 <div class="card m-5 p-2" style="width: 80%">
                     <div class="card-body d-flex flex-column justify-content-center align-items-center "> 
-                        <h5 class="card-title text-secondary">{{ __('Голосование окончилось неудачно!') }}</h5>
+                        <h5 class="h5 card-title text-secondary">{{ __('Голосование окончилось неудачно!') }}</h5>
                        
                         <div class="alert alert-danger mt-5" role="alert">
                             <div class="text-secondary">{{ __('Голосование не выявило победителей, так как два или более мероприятия набрали одинаковое кол-во голосов.') }}</div>

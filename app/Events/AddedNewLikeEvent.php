@@ -22,7 +22,7 @@ class AddedNewLikeEvent implements ShouldBroadcastNow
      *
      * @return void
      */
-    public function __construct($likesAmount)
+    public function __construct(int $likesAmount)
     {
         $this->likesAmount = $likesAmount;
     }

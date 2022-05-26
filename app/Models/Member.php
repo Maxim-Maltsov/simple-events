@@ -21,8 +21,13 @@ class Member extends Model
     }
 
 
-    public static function getAll(Voting $voting)
+    public static function getAll(?Voting $voting)
     {
+        if ( $voting == null) {
+
+            return [];
+        }
+
         $users = [];
 
         $members = Member::where('voting_id', $voting->id)->where('action', Member::TAKE_PART)->orderBy('id', 'asc')->get();
@@ -37,7 +42,7 @@ class Member extends Model
 
 
 
-    public static function userMadeChoice(Voting $voting, int $id)
+    public static function userMadeChoice(Voting $voting, int $id) :bool
     {
         $member = Member::where('voting_id', $voting->id)->where('user_id', $id)->first();
 

@@ -8,7 +8,6 @@ use App\Http\Requests\LikeRequest;
 use App\Http\Resources\LikeResource;
 use App\Models\Like;
 use App\Models\Voting;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller

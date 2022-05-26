@@ -24391,6 +24391,7 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
       errored: false,
       votes: 0,
       send: false,
+      userVoted: false,
       timerText: "00:00",
       totalSeconds: 0,
       intervalId: 0,
@@ -24407,8 +24408,6 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
   },
   methods: {
     sendVote: function sendVote(id) {
-      var _this = this;
-
       this.send = true;
       var config = {
         headers: {
@@ -24422,8 +24421,6 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
         console.log(response);
       })["catch"](function (error) {
         console.log(error);
-      })["finally"](function () {
-        return _this.send = false;
       });
     },
     takePart: function takePart(action) {
@@ -24444,18 +24441,18 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
       });
     },
     startTimer: function startTimer() {
-      var _this2 = this;
+      var _this = this;
 
       this.intervalId = setInterval(function () {
-        _this2.minutes = parseInt(_this2.totalSeconds / 60, 10);
-        _this2.seconds = parseInt(_this2.totalSeconds % 60, 10);
-        _this2.minutes = _this2.minutes < 10 ? "0" + _this2.minutes : _this2.minutes;
-        _this2.seconds = _this2.seconds < 10 ? "0" + _this2.seconds : _this2.seconds;
-        _this2.timerText = _this2.minutes + ":" + _this2.seconds;
-        --_this2.totalSeconds;
+        _this.minutes = parseInt(_this.totalSeconds / 60, 10);
+        _this.seconds = parseInt(_this.totalSeconds % 60, 10);
+        _this.minutes = _this.minutes < 10 ? "0" + _this.minutes : _this.minutes;
+        _this.seconds = _this.seconds < 10 ? "0" + _this.seconds : _this.seconds;
+        _this.timerText = _this.minutes + ":" + _this.seconds;
+        --_this.totalSeconds;
 
-        if (_this2.totalSeconds <= 0) {
-          _this2.stopTimer();
+        if (_this.totalSeconds <= 0) {
+          _this.stopTimer();
         }
       }, 1000);
     },
@@ -24470,18 +24467,18 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
     }
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this2 = this;
 
     window.Echo.channel('events').listen('AddedNewEventEvent', function (e) {
-      _this3.events.push(e.event);
+      _this2.events.push(e.event);
     });
     window.Echo.channel('active-voting').listen('StartVotingEvent', function (e) {
       if (location.pathname != '/voting-events') {
         location.pathname = '/voting-events';
       }
     }).listen('AddedNewLikeEvent', function (e) {
-      if (_this3.votes < e.likesAmount) {
-        _this3.votes = e.likesAmount;
+      if (_this2.votes < e.likesAmount) {
+        _this2.votes = e.likesAmount;
       }
     }).listen('VotingFinishedPhaseOneEvent', function (e) {
       if (location.pathname != '/voting-results') {
@@ -24491,66 +24488,76 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
       if (location.pathname != '/voting-failed') {
         location.pathname = '/voting-failed';
 
-        _this3.stopTimer();
+        _this2.stopTimer();
       }
     }).listen('VotingFinishedPhaseTwoEvent', function (e) {
       if (location.pathname != '/voting-finished') {
         location.pathname = '/voting-finished';
       }
     }).listen('AddedNewMemberEvent', function (e) {
-      _this3.action = e.action;
+      _this2.action = e.action;
 
-      if (_this3.action == _this3.YES) {
-        _this3.members.push(e.user);
+      if (_this2.action == _this2.YES) {
+        _this2.members.push(e.user);
       }
     });
 
     if (location.pathname == '/') {
       axios__WEBPACK_IMPORTED_MODULE_2___default().get('api/v1/events').then(function (response) {
-        _this3.events = response.data.data;
+        _this2.events = response.data.data;
       })["catch"](function (error) {
-        _this3.errored = true;
+        _this2.errored = true;
         console.log(error);
       })["finally"](function () {
-        return _this3.loading = false;
+        return _this2.loading = false;
       });
     }
 
     if (location.pathname == '/voting-events') {
-      axios__WEBPACK_IMPORTED_MODULE_2___default().get('api/v1/voting-phase-one').then(function (response) {
-        _this3.voting = response.data.data.voting;
-        _this3.events = response.data.data.events;
-        _this3.totalSeconds = response.data.data.totalSeconds;
-        _this3.votes = response.data.data.likesAmount;
-      })["catch"](function (error) {
-        _this3.errored = true;
-      })["finally"](function () {
-        return _this3.loading = false;
-      });
-      this.startTimer();
-    }
-
-    if (location.pathname == '/voting-results') {
       var config = {
         headers: {
           Authorization: "Bearer " + token
         }
       };
-      axios__WEBPACK_IMPORTED_MODULE_2___default().get('api/v1/voting-phase-two', config).then(function (response) {
-        _this3.voting = response.data.data.voting;
-        _this3.events = response.data.data.events;
-        _this3.totalSeconds = response.data.data.totalSeconds;
-        _this3.winnerEvent = response.data.data.winnerEvent;
-        _this3.members = response.data.data.members;
-        _this3.userMadeChoice = response.data.data.userMadeChoice;
+      axios__WEBPACK_IMPORTED_MODULE_2___default().get('api/v1/voting-phase-one', config).then(function (response) {
+        _this2.voting = response.data.data.voting;
+        _this2.events = response.data.data.events;
+        _this2.totalSeconds = response.data.data.totalSeconds;
+        _this2.votes = response.data.data.likesAmount;
+        _this2.userVoted = response.data.data.userVoted;
 
-        if (_this3.userMadeChoice) {
-          _this3.accepted = true;
+        if (_this2.userVoted) {
+          _this2.send = true;
         }
       })["catch"](function (error) {
-        _this3.errored = true;
+        _this2.errored = true;
       })["finally"](function () {
-        return _this3.loading = false;
+        return _this2.loading = false;
+      });
+      this.startTimer();
+    }
+
+    if (location.pathname == '/voting-results') {
+      var _config = {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      };
+      axios__WEBPACK_IMPORTED_MODULE_2___default().get('api/v1/voting-phase-two', _config).then(function (response) {
+        _this2.voting = response.data.data.voting;
+        _this2.events = response.data.data.events;
+        _this2.totalSeconds = response.data.data.totalSeconds;
+        _this2.winnerEvent = response.data.data.winnerEvent;
+        _this2.members = response.data.data.members;
+        _this2.userMadeChoice = response.data.data.userMadeChoice;
+
+        if (_this2.userMadeChoice) {
+          _this2.accepted = true;
+        }
+      })["catch"](function (error) {
+        _this2.errored = true;
+      })["finally"](function () {
+        return _this2.loading = false;
       });
       this.startTimer();
     }

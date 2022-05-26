@@ -57,5 +57,38 @@ class User extends Authenticatable
     {
         return $this->hasMany(Like::class);
     }
+
+
+    public static function voted(Voting $voting, int $id) :bool
+    {
+        $like = Like::where('voting_id', $voting->id)->where('user_id', $id)->first();
+
+        if ($like instanceof Like) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public static function getVotedAll(?Voting $voting) :array
+    {
+        if ( $voting == null) {
+
+            return [];
+        }
+        
+        $users = [];
+
+        $likes = Like::where( 'voting_id', $voting->id )->where( 'event_id', $voting->winned_event_id )->get();
+        
+        foreach ($likes as $like) {
+
+            $users[] = $like->user;
+        }
+
+        return $users;
+    }
     
 }

@@ -26,9 +26,10 @@
             </section>
 
             <section v-else class="text-center d-flex flex-column justify-content-center align-items-center mt-5">
+            
                 <div v-for="event of events" class="card m-2" style="width: 70%">
                     <div class="card-body">
-                        <h5 class="card-title text-success"> @{{ event.title }} </h5>
+                        <h5 class="h5 card-title text-success"> @{{ event.title }} </h5>
                         <p class="card-text text-secondary"> @{{ event.description }} </p>
                     </div>
                 </div>

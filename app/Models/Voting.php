@@ -135,7 +135,7 @@ class Voting extends Model
     }
     
 
-    public function getLikesAmount()
+    public function getLikesAmount() :int
     {
       return  Like::query()
                     ->select(DB::raw('COUNT(*) as likes_amount'))
