@@ -69,7 +69,6 @@ const app = createApp({
               .catch(function (error) {
                 console.log(error);
               })
-              .finally(() => (this.send = false));
         },
 
 
