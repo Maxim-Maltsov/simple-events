@@ -8,7 +8,8 @@ class HomeController extends Controller
 {
     public function index() 
     {   
-        
-        return view('events');
+        $token = session('API-Token');
+
+        return view('events', ['token' => $token]);
     }
 }

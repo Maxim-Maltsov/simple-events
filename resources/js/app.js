@@ -19,7 +19,9 @@ const app = createApp({
 
             voting:{},
             events:[],
-    
+        
+            pagination: {},
+            
             loading: true,
             errored: false,
 
@@ -47,6 +49,136 @@ const app = createApp({
     
     methods: {
 
+        makePagination(data) {
+
+            let pagination = {
+
+                current_page: data.meta.current_page,
+                last_page: data.meta.last_page,
+                prev: data.links.prev,
+                next: data.links.next,
+            }
+
+            this.pagination = pagination;
+            console.log(this.pagination);
+        },
+
+
+        makeVotingPagination(data) {
+
+            let pagination = {
+
+                current_page: data.current_page,
+                last_page: data.last_page,
+                prev: data.prev_page_url,
+                next: data.next_page_url,
+            }
+
+            this.pagination = pagination;
+        },
+
+
+        getEvents(page_url) {
+            
+            let url = page_url || 'api/v1/events';
+
+            let config = {
+
+                headers: {
+                    Authorization: "Bearer " + token,
+                }
+            }
+            
+            axios
+                .get( url , config)
+                .then( response => {
+                    
+                    this.events = response.data.data;
+                    this.makePagination(response.data);
+                })
+                .catch( error => {
+                    
+                    this.errored = true;
+                    console.log(error);
+                })
+                .finally(() => (this.loading = false));
+        },
+
+
+        getVoting(page_url) {
+
+            let url = page_url || 'api/v1/voting-phase-one';
+
+            let config = {
+
+                headers: {
+                    Authorization: "Bearer " + token,
+                }
+            }
+            
+            axios
+                .get( url, config)
+                .then( response => {
+                    
+                    this.voting = response.data.data.voting;
+                    this.events = response.data.data.events.data;
+                    this.totalSeconds = response.data.data.totalSeconds;
+                    this.votes = response.data.data.likesAmount;
+                    this.userVoted = response.data.data.userVoted;
+
+                    this.makeVotingPagination(response.data.data.events);
+            
+                    if (this.userVoted) {
+
+                        this.send = true;
+                    }
+                })
+                .catch( error => {
+                    
+                    this.errored = true;
+                    console.log(error);
+                })
+                .finally(() => (this.loading = false));
+
+            this.startTimer();
+
+        },
+
+        getVotingResults() {
+
+            let config = {
+
+                headers: {
+                    Authorization: "Bearer " + token,
+                }
+            }
+
+            axios
+                .get('api/v1/voting-phase-two', config)
+                .then( response => {
+                    
+                    this.voting = response.data.data.voting;
+                    this.events = response.data.data.events;
+                    this.totalSeconds = response.data.data.totalSeconds;
+                    this.winnerEvent = response.data.data.winnerEvent;
+                    this.members = response.data.data.members;
+                    this.userMadeChoice = response.data.data.userMadeChoice;
+
+                    if (this.userMadeChoice) {
+
+                        this.accepted = true;
+                    }
+                })
+                .catch( error => {
+                    
+                    this.errored = true;
+                })
+                .finally(() => (this.loading = false));
+
+            this.startTimer();
+        },
+
+        
         sendVote(id) {
 
             this.send = true;
@@ -189,93 +321,23 @@ const app = createApp({
                     }
                 });
 
-                
+        
         
         if ( location.pathname == '/' ) {
             
-            axios
-                .get('api/v1/events')
-                .then( response => {
-                    
-                    this.events = response.data.data;
-                    
-                })
-                .catch( error => {
-                    
-                    this.errored = true;
-                    console.log(error);
-                })
-                .finally(() => (this.loading = false));
+            this.getEvents();
         }
 
         
         if ( location.pathname == '/voting-events' ) {
-            
-            let config = {
 
-                headers: {
-                    Authorization: "Bearer " + token,
-                }
-            }
-            
-            axios
-                .get('api/v1/voting-phase-one', config)
-                .then( response => {
-                    
-                    this.voting = response.data.data.voting;
-                    this.events = response.data.data.events;
-                    this.totalSeconds = response.data.data.totalSeconds;
-                    this.votes = response.data.data.likesAmount;
-                    this.userVoted = response.data.data.userVoted;
-                    
-                    if (this.userVoted) {
-
-                        this.send = true;
-                    }
-
-                })
-                .catch( error => {
-                    
-                    this.errored = true;
-                })
-                .finally(() => (this.loading = false));
-
-            this.startTimer();
+            this.getVoting(); 
         }
 
         
         if ( location.pathname == '/voting-results' ) {
-           
-            let config = {
-
-                headers: {
-                    Authorization: "Bearer " + token,
-                }
-            }
-
-            axios
-                .get('api/v1/voting-phase-two', config)
-                .then( response => {
-                    
-                    this.voting = response.data.data.voting;
-                    this.events = response.data.data.events;
-                    this.totalSeconds = response.data.data.totalSeconds;
-                    this.winnerEvent = response.data.data.winnerEvent;
-                    this.members = response.data.data.members;
-                    this.userMadeChoice = response.data.data.userMadeChoice;
-
-                    if (this.userMadeChoice) {
-
-                        this.accepted = true;
-                    }
-                })
-                .catch( error => {
-                    
-                    this.errored = true;
-                })
-                .finally(() => (this.loading = false));
-
-            this.startTimer();
+            
+            this.getVotingResults();
         }
         
     }

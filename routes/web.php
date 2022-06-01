@@ -27,18 +27,18 @@ require __DIR__.'/auth.php';
 
 
 // My Route
-Route::middleware('auth')->get('/', [HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => 'auth'], function () {
+    
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::middleware('auth')->get('event-form', [EventController::class, 'create'])->name('event-form');
-Route::middleware('auth')->post('add-event', [EventController::class, 'store'])->name('add-event');
-
-
-Route::middleware('auth')->get('voting-events', [VotingController::class, 'index'])->name('voting-events');
-
-Route::middleware('auth')->get('voting-form', [VotingController::class, 'create'])->name('voting-form');
-Route::middleware('auth')->post('add-voting', [VotingController::class, 'store'])->name('add-voting');
-
-Route::middleware('auth')->get('voting-results', [VotingController::class, 'results'])->name('voting-results');
-Route::middleware('auth')->get('voting-failed', [VotingController::class, 'failed'])->name('voting-failed');
-Route::middleware('auth')->get('voting-finished', [VotingController::class, 'finished'])->name('voting-finished');
-
+    Route::get('event-form', [EventController::class, 'create'])->name('event-form');
+    Route::post('add-event', [EventController::class, 'store'])->name('add-event');
+    
+    Route::get('voting-form', [VotingController::class, 'create'])->name('voting-form');
+    Route::post('add-voting', [VotingController::class, 'store'])->name('add-voting');
+    
+    Route::get('voting-events', [VotingController::class, 'index'])->name('voting-events');
+    Route::get('voting-results', [VotingController::class, 'results'])->name('voting-results');
+    Route::get('voting-failed', [VotingController::class, 'failed'])->name('voting-failed');
+    Route::get('voting-finished', [VotingController::class, 'finished'])->name('voting-finished');
+});

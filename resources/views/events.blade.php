@@ -1,4 +1,4 @@
-@extends('layouts.my-app');
+@extends('layouts.my-app')
 
 
 @section('content')
@@ -26,16 +26,38 @@
             </section>
 
             <section v-else class="text-center d-flex flex-column justify-content-center align-items-center mt-5">
-            
-                <div v-for="event of events" class="card m-2" style="width: 70%">
+                
+                <!-- pagination -->
+                <nav aria-label="Page navigation example" class="m-5">
+                    <ul class="pagination pagination-lg">
+                        <li  class="page-item" :class="{disabled: !Boolean(pagination.prev)}" v-on:click.prevent="getEvents(pagination.prev)">
+                          <a class="page-link" href="#"> &laquo;  </a>
+                        </li>
+
+                        <li class="page-item" :class="{disabled:true}">
+                            <a class="page-link" href="javascript:void(0)"> <span class="text-secondary">@{{pagination.current_page}} из @{{pagination.last_page}}</span> </a>
+                        </li>
+                    
+                        <li class="page-item" :class="{disabled: !Boolean(pagination.next)}" v-on:click.prevent="getEvents(pagination.next)">
+                            <a class="page-link"  href="#" > &raquo; </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- cards -->
+                <div v-for="event of events" :key="event.id" class="card m-2" style="width: 70%">
                     <div class="card-body">
                         <h5 class="h5 card-title text-success"> @{{ event.title }} </h5>
                         <p class="card-text text-secondary"> @{{ event.description }} </p>
                     </div>
                 </div>
+
+                
             </section>
             
         </div>
     </div>
     
+    <script> var token = "{{ $token }}"; </script>
+
 @endsection

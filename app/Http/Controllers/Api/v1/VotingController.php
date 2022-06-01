@@ -26,7 +26,7 @@ class VotingController extends Controller
             ]]);
         }
         
-        $events = $voting->events()->get();
+        $events = $voting->events()->paginate(5);
         $totalSeconds = $voting->getTotalSeconds();
         $likesAmount = $voting->getLikesAmount();
         $userVoted = User::voted($voting, $id);

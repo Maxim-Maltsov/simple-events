@@ -18,13 +18,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['middleware' => 'auth:sanctum'], function () {
 
-Route::apiResources([
+    Route::apiResources([
 
-    'events' => EventController::class,
-]);
+        'events' => EventController::class,
+        'likes' => LikeController::class,
+        'members' => MemberController::class,
+       
+    ]);
+});
 
 
-Route::get('voting-phase-one', [VotingController::class, 'getActiveVotingInPhaseOne'])->middleware('auth:sanctum');
-
-
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    
+    Route::get('voting-phase-one', [VotingController::class, 'getActiveVotingInPhaseOne']);
+    Route::get('voting-phase-two', [VotingController::class, 'getActiveVotingInPhaseTwo']);
+});
