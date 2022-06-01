@@ -27,8 +27,4 @@ Route::apiResources([
 
 Route::get('voting-phase-one', [VotingController::class, 'getActiveVotingInPhaseOne'])->middleware('auth:sanctum');
 
-Route::post('likes', [LikeController::class, 'store'])->middleware('auth:sanctum');
 
-Route::get('voting-phase-two', [VotingController::class, 'getActiveVotingInPhaseTwo'])->middleware('auth:sanctum');
-
-Route::post('members', [MemberController::class, 'store'])->middleware('auth:sanctum');
