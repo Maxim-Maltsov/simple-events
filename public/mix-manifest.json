@@ -1,4 +1,9 @@
 {
-    "/js/app.js": "/js/app.js",
+    "/js/home.js": "/js/home.js",
+    "/js/form.js": "/js/form.js",
+    "/js/voting.js": "/js/voting.js",
+    "/js/results.js": "/js/results.js",
+    "/js/finished.js": "/js/finished.js",
+    "/js/failed.js": "/js/failed.js",
     "/css/app.css": "/css/app.css"
 }

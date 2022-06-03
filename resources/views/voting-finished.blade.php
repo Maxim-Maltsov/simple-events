@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <div class="row">
+    <div id="finished" class="row pt-3">
         <div class="col-12 text-center flex-column justify-content-center align-items-center">
             
             <section class="d-flex flex-column align-items-center p-5">   
@@ -20,5 +20,7 @@
 
         </div>       
     </div>
+
+    <script src="{{ asset('js/finished.js') }}"></script>
 
 @endsection

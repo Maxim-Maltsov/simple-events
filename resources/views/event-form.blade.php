@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <div class="row text-center">
+    <div id="form" class="row text-center pt-5">
         <div class="col-12 d-flex direction-column align-items-center justify-content-center p-5">
  
             <div class="card m-3" style="width:60%">
@@ -42,4 +42,6 @@
         </div>
    </div>  
     
+   <script src="{{ asset('js/form.js') }}"></script>
+   
 @endsection

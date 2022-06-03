@@ -3,8 +3,8 @@
 
 @section('content')
 
-    <div class="row">
-        <div class="col-12 text-center flex-column justify-content-center align-items-center">
+    <div id="home" class="row">
+        <div class="col-12 text-center flex-column justify-content-center align-items-center pt-3">
            
             <section v-if="errored" class="d-flex flex-column align-items-center">
                 <div class="card-info mt-5" style="width: 70%">
@@ -59,5 +59,6 @@
     </div>
     
     <script> var token = "{{ $token }}"; </script>
+    <script src="{{ asset('js/home.js') }}" defer></script>
 
 @endsection

@@ -11,7 +11,14 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js').vue().postCss('resources/css/app.css', 'public/css', [
+mix.js('resources/js/home.js', 'public/js')
+   .js('resources/js/form.js', 'public/js')
+   .js('resources/js/voting.js', 'public/js')
+   .js('resources/js/results.js', 'public/js')
+   .js('resources/js/finished.js', 'public/js')
+   .js('resources/js/failed.js', 'public/js')
+   .vue()
+   .postCss('resources/css/app.css', 'public/css', [
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),

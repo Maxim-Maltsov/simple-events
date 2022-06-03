@@ -3,8 +3,8 @@
 
 @section('content')
 
-    <div class="row">
-        <div class="col-12 text-center flex-column justify-content-center align-items-center">
+    <div id="voting" class="row pt-5">
+        <div class="col-12 text-center flex-column justify-content-center align-items-center py-3">
             
                 <section v-if="errored" class="d-flex flex-column align-items-center">
                     <div class="card-info m-5" style="width: 70%">
@@ -28,7 +28,7 @@
                 <section v-else  class="d-flex flex-column align-items-center">
                     
                     <!-- timer --> 
-                    <div class="card m-5 p-2" style="width: 70%">
+                    <div class="card mt-5 p-2" style="width: 70%">
                         <div class="card-body d-flex justify-content-between ">
                             <div class="text-secondary px-3">{{ __('Количество проголосовавших:') }} <span class="badge badge-secondary">@{{ (votes)? votes : '0' }}</span></div>
                             <div class="text-secondary px-3">{{ __('До конца голосования осталось:') }} <span class="badge badge-secondary">@{{ (timerText)? timerText : '00:00' }}</span></div>
@@ -65,5 +65,6 @@
     </div>
 
     <script> var token = "{{ $token }}"; </script>
+    <script src="{{ asset('js/voting.js') }}"></script>
     
 @endsection
